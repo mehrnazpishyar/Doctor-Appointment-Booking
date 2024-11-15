@@ -1,11 +1,12 @@
+import Navbar from "./components/Navbar"
 
 function App() {
 
 
   return (
-    <>
-    <div><h1 className="text-cyan-600">hello</h1></div>
-    </>
+    <div className="mx-4 sm:mx-[10%]">
+    <Navbar/>
+    </div>
   )
 }
 
