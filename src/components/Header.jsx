@@ -1,5 +1,5 @@
 import React from 'react'
-import { assets } from '../assets//assets_data'
+import { assets } from '../assets/data'
 
 const Header = () => {
   return (
