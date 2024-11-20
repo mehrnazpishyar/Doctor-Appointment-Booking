@@ -10,11 +10,7 @@
 	.st4{fill:#C0CDE2;}
 </style>
 <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="63.3" y1="402" x2="63.3" y2="527.6" gradientTransform="matrix(1 0 0 1 0 -402)">
-	<stop  offset="5.327789e-09" style="stop-color:#8CB45F"/>
-	<stop  offset="0.2245" style="stop-color:#88B561;stop-opacity:0.8428"/>
-	<stop  offset="0.4572" style="stop-color:#7BB766;stop-opacity:0.68"/>
-	<stop  offset="0.6935" style="stop-color:#67BC6E;stop-opacity:0.5145"/>
-	<stop  offset="0.931" style="stop-color:#4AC27A;stop-opacity:0.3483"/>
+	<stop  offset="5.327789e-09" style="stop-color:#40C47E"/>
 	<stop  offset="1" style="stop-color:#40C47E;stop-opacity:0.3"/>
 </linearGradient>
 <circle class="st0" cx="63.3" cy="62.8" r="62.8"/>
