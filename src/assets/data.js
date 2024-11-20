@@ -11,6 +11,7 @@ import General_physician from './General_physician.svg'
 import Gynecologist from './Gynecologist.svg'
 import Neurologist from './Neurologist.svg'
 import Pediatricians from './Pediatricians.svg'
+import happy_doctor from './happy_doctor.png'
 import doc1 from './doc1.png'
 import doc2 from './doc2.png'
 import doc3 from './doc3.png'
@@ -32,7 +33,8 @@ export const assets = {
     menu_icon,
     profilePic,
     team,
-    arrow_icon
+    arrow_icon,
+    happy_doctor
 }
 
 export const specialtyData = [

@@ -4,10 +4,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#63c50b",
+        primary: "#8cb45f",
       },
       gridTemplateColumns: {
-        auto: "repeat(auto-fill, minmax(250px, 1fr))",
+        auto: "repeat(auto-fill, minmax(280px, 1fr))",
       },
     },
   },
