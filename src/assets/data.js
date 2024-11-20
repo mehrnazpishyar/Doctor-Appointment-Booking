@@ -24,6 +24,16 @@ import doc9 from './doc9.png'
 import doc10 from './doc10.png'
 import doc11 from './doc11.png'
 import doc12 from './doc12.png'
+import doc13 from './doc13.png'
+import doc14 from './doc14.png'
+import doc15 from './doc15.png'
+import doc16 from './doc16.png'
+import doc17 from './doc17.png'
+import doc18 from './doc18.png'
+import doc19 from './doc19.png'
+import doc20 from './doc20.png'
+import doc21 from './doc21.png'
+import doc22 from './doc22.png'
 
 
 export const assets = {
@@ -114,7 +124,7 @@ export const doctors = [
         _id: 'doc4',
         name: 'Dr. Anna Lee',
         image: doc4,
-        specialty: 'Pediatricians',
+        specialty: 'General physician',
         degree: 'PhD',
         experience: '30 Years',
         about: 'Dr. Anna has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
@@ -198,7 +208,7 @@ export const doctors = [
         _id: 'doc10',
         name: 'Dr. Paula King',
         image: doc10,
-        specialty: 'Pediatricians',
+        specialty: 'Dermatologist',
         degree: 'DGO ',
         experience: '9 Years',
         about: 'Dr. Paula has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
@@ -212,7 +222,7 @@ export const doctors = [
         _id: 'doc11',
         name: 'Dr. Mohanna Kelly',
         image: doc11,
-        specialty: 'Neurologist',
+        specialty: 'General physician',
         degree: 'MBBS',
         experience: '29 Years',
         about: 'Dr. Mohanna has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
@@ -226,10 +236,150 @@ export const doctors = [
         _id: 'doc12',
         name: 'Dr. Juseph Harris',
         image: doc12,
-        specialty: 'Neurologist',
+        specialty: 'Pediatricians',
         degree: 'FRCS',
         experience: '4 Years',
         about: 'Dr. Juseph has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        fees: 50,
+        address: {
+           line1: 'Werner, Schroeder',
+            line2: 'Louise, Hans, Deutschland'
+        }
+    },
+    {
+        _id: 'doc13',
+        name: 'Dr. Dora Hamis',
+        image: doc13,
+        specialty: 'Gastroenterologist',
+        degree: 'FRCS',
+        experience: '24 Years',
+        about: 'Dr. Dora has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        fees: 50,
+        address: {
+           line1: 'Werner, Schroeder',
+            line2: 'Louise, Hans, Deutschland'
+        }
+    },
+    {
+        _id: 'doc14',
+        name: 'Dr. Bernard Hamington',
+        image: doc14,
+        specialty: 'Neurologist',
+        degree: 'FRCS',
+        experience: '30 Years',
+        about: 'Dr. Bernard has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        fees: 50,
+        address: {
+           line1: 'Werner, Schroeder',
+            line2: 'Louise, Hans, Deutschland'
+        }
+    },
+    {
+        _id: 'doc15',
+        name: 'Dr. Camella Bergman',
+        image: doc15,
+        specialty: 'General physician',
+        degree: 'FRCS',
+        experience: '8 Years',
+        about: 'Dr. Camella has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        fees: 50,
+        address: {
+           line1: 'Werner, Schroeder',
+            line2: 'Louise, Hans, Deutschland'
+        }
+    },
+    {
+        _id: 'doc16',
+        name: 'Dr. Donald Pacho',
+        image: doc16,
+        specialty: 'Gastroenterologist',
+        degree: 'FRCS',
+        experience: '14 Years',
+        about: 'Dr. Donald has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        fees: 50,
+        address: {
+           line1: 'Werner, Schroeder',
+            line2: 'Louise, Hans, Deutschland'
+        }
+    },
+    {
+        _id: 'doc17',
+        name: 'Dr. Adam Max',
+        image: doc17,
+        specialty: 'Gynecologist',
+        degree: 'FRCS',
+        experience: '4 Years',
+        about: 'Dr. Adam has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        fees: 50,
+        address: {
+           line1: 'Werner, Schroeder',
+            line2: 'Louise, Hans, Deutschland'
+        }
+    },
+    {
+        _id: 'doc18',
+        name: 'Dr. Nicolla Schmidt',
+        image: doc18,
+        specialty: 'Gastroenterologist',
+        degree: 'FRCS',
+        experience: '28 Years',
+        about: 'Dr. Nicolla has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        fees: 50,
+        address: {
+           line1: 'Werner, Schroeder',
+            line2: 'Louise, Hans, Deutschland'
+        }
+    },
+    {
+        _id: 'doc19',
+        name: 'Dr. Tom Coloni',
+        image: doc19,
+        specialty: 'Neurologist',
+        degree: 'FRCS',
+        experience: '13 Years',
+        about: 'Dr. Tom has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        fees: 50,
+        address: {
+           line1: 'Werner, Schroeder',
+            line2: 'Louise, Hans, Deutschland'
+        }
+    },
+    {
+        _id: 'doc20',
+        name: 'Dr. Nansi Boschcat',
+        image: doc20,
+        specialty: 'Pediatricians',
+        degree: 'FRCS',
+        experience: '6 Years',
+        about: 'Dr. Nansi has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        fees: 50,
+        address: {
+           line1: 'Werner, Schroeder',
+            line2: 'Louise, Hans, Deutschland'
+        }
+    },
+    {
+        _id: 'doc21',
+        name: 'Dr. Kate Parson',
+        image: doc21,
+        specialty: 'Dermatologist',
+        degree: 'FRCS',
+        experience: '5 Years',
+        about: 'Dr. Kate has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
+        fees: 50,
+        address: {
+           line1: 'Werner, Schroeder',
+            line2: 'Louise, Hans, Deutschland'
+        }
+    },
+    {
+        _id: 'doc22',
+        name: 'Dr. Samanta Elvis',
+        image: doc22,
+        specialty: 'Pediatricians',
+        degree: 'FRCS',
+        experience: '9 Years',
+        about: 'Dr. Samanta has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
         fees: 50,
         address: {
            line1: 'Werner, Schroeder',
