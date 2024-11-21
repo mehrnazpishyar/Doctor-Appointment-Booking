@@ -12,6 +12,8 @@ import Gynecologist from './Gynecologist.svg'
 import Neurologist from './Neurologist.svg'
 import Pediatricians from './Pediatricians.svg'
 import happy_doctor from './happy_doctor.png'
+import info_icon from './info_icon.svg'
+import verified_icon from './verified_icon.svg'
 import doc1 from './doc1.png'
 import doc2 from './doc2.png'
 import doc3 from './doc3.png'
@@ -44,7 +46,9 @@ export const assets = {
     profilePic,
     team,
     arrow_icon,
-    happy_doctor
+    happy_doctor,
+    info_icon,
+    verified_icon
 }
 
 export const specialtyData = [
@@ -240,7 +244,7 @@ export const doctors = [
         degree: 'FRCS',
         experience: '4 Years',
         about: 'Dr. Juseph has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
-        fees: 50,
+        fees: 60,
         address: {
            line1: 'Werner, Schroeder',
             line2: 'Louise, Hans, Deutschland'
@@ -268,7 +272,7 @@ export const doctors = [
         degree: 'FRCS',
         experience: '30 Years',
         about: 'Dr. Bernard has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
-        fees: 50,
+        fees: 30,
         address: {
            line1: 'Werner, Schroeder',
             line2: 'Louise, Hans, Deutschland'
@@ -296,7 +300,7 @@ export const doctors = [
         degree: 'FRCS',
         experience: '14 Years',
         about: 'Dr. Donald has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
-        fees: 50,
+        fees: 40,
         address: {
            line1: 'Werner, Schroeder',
             line2: 'Louise, Hans, Deutschland'
@@ -310,7 +314,7 @@ export const doctors = [
         degree: 'FRCS',
         experience: '4 Years',
         about: 'Dr. Adam has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
-        fees: 50,
+        fees: 20,
         address: {
            line1: 'Werner, Schroeder',
             line2: 'Louise, Hans, Deutschland'
@@ -324,7 +328,7 @@ export const doctors = [
         degree: 'FRCS',
         experience: '28 Years',
         about: 'Dr. Nicolla has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
-        fees: 50,
+        fees: 60,
         address: {
            line1: 'Werner, Schroeder',
             line2: 'Louise, Hans, Deutschland'
@@ -352,7 +356,7 @@ export const doctors = [
         degree: 'FRCS',
         experience: '6 Years',
         about: 'Dr. Nansi has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
-        fees: 50,
+        fees: 40,
         address: {
            line1: 'Werner, Schroeder',
             line2: 'Louise, Hans, Deutschland'
@@ -380,7 +384,7 @@ export const doctors = [
         degree: 'FRCS',
         experience: '9 Years',
         about: 'Dr. Samanta has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.',
-        fees: 50,
+        fees: 30,
         address: {
            line1: 'Werner, Schroeder',
             line2: 'Louise, Hans, Deutschland'
