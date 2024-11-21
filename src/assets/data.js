@@ -14,6 +14,7 @@ import Pediatricians from './Pediatricians.svg'
 import happy_doctor from './happy_doctor.png'
 import info_icon from './info_icon.svg'
 import verified_icon from './verified_icon.svg'
+import about from './about.jpg'
 import doc1 from './doc1.png'
 import doc2 from './doc2.png'
 import doc3 from './doc3.png'
@@ -48,7 +49,8 @@ export const assets = {
     arrow_icon,
     happy_doctor,
     info_icon,
-    verified_icon
+    verified_icon,
+    about
 }
 
 export const specialtyData = [
