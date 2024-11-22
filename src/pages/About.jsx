@@ -4,13 +4,13 @@ import { assets } from "../assets/data";
 const About = () => {
   return (
     <div>
-      <div className="text-left text-2xl pt-10 text-gray-500 ">
-        <p className="text-green-600 font-bold w-fit border-b-2 border-gray-200">
-          ABOUT US :
+      <div className="text-center text-2xl pt-10 text-gray-500 ">
+        <p className="text-green-600">
+          ABOUT US
         </p>
       </div>
 
-      <div className="my-10 flex flex-col md:flex-row gap-12">
+      <div className="my-10 flex flex-col justify-center md:flex-row gap-12">
         <img className="w-full md:max-w-[360px]" src={assets.about} alt="" />
         <div className="flex flex-col justify-center gap-6 md:w-2/4 text-sm text-gray-600">
           <p>
