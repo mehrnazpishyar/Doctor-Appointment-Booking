@@ -11,7 +11,7 @@ const About = () => {
       </div>
 
       <div className="my-10 flex flex-col justify-center md:flex-row gap-12">
-        <img className="w-full md:max-w-[360px]" src={assets.about} alt="" />
+        <img className="w-full md:max-w-[360px] rounded" src={assets.about} alt="" />
         <div className="flex flex-col justify-center gap-6 md:w-2/4 text-sm text-gray-600">
           <p>
             Welcome to Doctor Appointment Website, your reliable partner in
