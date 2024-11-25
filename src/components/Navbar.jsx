@@ -4,12 +4,17 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
-
+  const [showMenu, setShowMenu] = useState(false);
   const [token, setToken] = useState(true);
 
   return (
     <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400">
-      <img onClick={()=> navigate('/')} className="w-44 cursor-pointer" src={assets.logo} alt="" />
+      <img
+        onClick={() => navigate("/")}
+        className="w-44 cursor-pointer"
+        src={assets.logo}
+        alt=""
+      />
       <ul className="md:flex items-start gap-5 font-medium hidden">
         <NavLink to="/">
           <li className="py-1">HOME</li>
@@ -49,7 +54,10 @@ const Navbar = () => {
                   My Appointments
                 </p>
                 <p
-                  onClick={() => {setToken(false); navigate('/')}}
+                  onClick={() => {
+                    setToken(false);
+                    navigate("/");
+                  }}
                   className="hover:text-black cursor-pointer"
                 >
                   Logout
@@ -66,19 +74,38 @@ const Navbar = () => {
           </button>
         )}
 
-        <img className="w-6 md:hidden" src={assets.menu_icon} alt="" />
+        <img onClick={() => setShowMenu((prev) => !prev)} className="w-6 md:hidden" src={assets.menu_icon} alt="" />
 
         {/* ---- Mobile Menu ---- */}
-        <div className="md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all">
+        <div
+          className={`md:hidden fixed  inset-0  z-20 overflow-hidden bg-white transition-all duration-300 ${
+            showMenu ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
           <div className="flex items-center justify-between px-5 py-6">
             <img src={assets.logo} className="w-36" alt="" />
-            <img src={assets.close_icon} className="w-7" alt="" />
+            <img
+              onClick={() => setShowMenu((prev) => !prev)}
+              src={assets.close_icon}
+              className="w-7 cursor-pointer"
+              alt="Close Menu"
+            />
           </div>
           <ul className="flex flex-col items-center gap-2 mt-5 px-5 text-lg font-medium">
-            <p className="px-4 py-2 rounded full inline-block">HOME</p>
-            <p className="px-4 py-2 rounded full inline-block">ALL DOCTORS</p>
-            <p className="px-4 py-2 rounded full inline-block">ABOUT</p>
-            <p className="px-4 py-2 rounded full inline-block">CONTACT</p>
+            <NavLink onClick={() => setShowMenu(false)} to="/">
+              <p className="px-4 py-2 rounded full inline-block">HOME</p>
+            </NavLink>
+            <NavLink onClick={() => setShowMenu(false)} to="/doctors">
+              {" "}
+              <p className="px-4 py-2 rounded full inline-block">ALL DOCTORS</p>
+            </NavLink>
+            <NavLink onClick={() => setShowMenu(false)} to="/about">
+              <p className="px-4 py-2 rounded full inline-block">ABOUT</p>
+            </NavLink>
+            <NavLink onClick={() => setShowMenu(false)} to="/contact">
+              {" "}
+              <p className="px-4 py-2 rounded full inline-block">CONTACT</p>
+            </NavLink>
           </ul>
         </div>
       </div>
