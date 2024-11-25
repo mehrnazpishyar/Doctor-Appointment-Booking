@@ -9,6 +9,7 @@ import MyProfile from "./pages/MyProfile";
 import Appointment from "./pages/Appointment";
 import MyAppointments from "./pages/MyAppointments";
 import Footer from "./components/Footer";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/my-appointments" element={<MyAppointments />} />
       </Routes>
       <Footer/>
+      <ToastContainer />
     </div>
   );
 }

@@ -3,10 +3,11 @@ import { useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/data";
 import RelatedDoctors from "../components/RelatedDoctors";
+import { toast } from "react-toastify";
 
 const Appointment = () => {
   const { docId } = useParams();
-  const { doctors, currencySymbol } = useContext(AppContext);
+  const { doctors, currencySymbol,setAppointments } = useContext(AppContext);
   const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
   const [docInfo, setDocInfo] = useState(null);
@@ -69,6 +70,12 @@ const Appointment = () => {
   };
 
   const bookAppointment = async () => {
+
+    if (!slotTime) {
+      toast.error("Please select a time slot.");
+      return;
+    }
+
     const date = docSlots[slotIndex][0].datetime;
 
     let day = date.getDate();
@@ -77,6 +84,17 @@ const Appointment = () => {
 
     const slotDate = `${day}_${month}_${year}`;
     console.log(slotDate, slotTime);
+
+    const newAppointment = {
+      doctor: docInfo,
+      date: slotDate,
+      time: slotTime,
+  };
+
+
+  setAppointments((prev) => [...prev, newAppointment]);
+  toast.success("Your appointment has been successfully added!");
+
   };
 
   useEffect(() => {
