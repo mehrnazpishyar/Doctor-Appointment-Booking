@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/data";
 import RelatedDoctors from "../components/RelatedDoctors";
@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 
 const Appointment = () => {
   const { docId } = useParams();
+  const navigate = useNavigate();
   const { doctors, currencySymbol,setAppointments } = useContext(AppContext);
   const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
@@ -70,6 +71,15 @@ const Appointment = () => {
   };
 
   const bookAppointment = async () => {
+    const token = localStorage.getItem("token"); 
+    if (!token) {
+      toast.warning("Please log in to book an appointment.");
+     
+      localStorage.setItem("redirectTo", `/appointment/${docId}`);
+      navigate("/login");
+      return;
+    }
+    
 
     if (!slotTime) {
       toast.error("Please select a time slot.");

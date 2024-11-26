@@ -23,7 +23,7 @@ const Login = () => {
     const users = getUsers();
     const userExists = users.some((user) => user.email === email);
     if (userExists) {
-      setState('Login'); // اگر کاربر وجود دارد، فرم به Login تغییر می‌کند
+      setState('Login');
     }
   }, [email]);
 
@@ -39,7 +39,7 @@ const Login = () => {
       users.push(newUser);
       saveUsers(users);
       setMessage('Account created successfully! You can log in now.');
-      setState('Login'); // Switch to Login after successful signup
+      setState('Login'); 
     }
   };
 
@@ -52,7 +52,11 @@ const Login = () => {
     if (user) {
       setMessage(`Welcome back, ${user.name}!`);
       localStorage.setItem('token', JSON.stringify({ email })); 
-      navigate('/my-profile');
+    
+      const redirectTo = localStorage.getItem("redirectTo") || "/my-profile";
+      localStorage.removeItem("redirectTo");
+      navigate(redirectTo);
+
     } else {
       setMessage('Invalid email or password.');
     }
@@ -75,7 +79,7 @@ const Login = () => {
       <p className='text-2xl font-semibold'>{state === 'Sign Up' ? 'Create Account' : 'Login'}</p>
       <p>Please {state === 'Sign Up' ? 'sign up' : 'log in'} to book appointment</p>
       {message && (
-          <div className="text-red-500 text-sm w-full text-center">
+          <div className="text-green-500 text-sm w-full text-center">
             {message}
           </div>
         )}
