@@ -1,11 +1,26 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { assets } from "../assets/data";
 import { NavLink, useNavigate } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
-  const token = localStorage.getItem('token');
+  const {token,setToken} = useContext(AppContext)
+  
+
+
+useEffect(() => {
+  const handleStorageChange = () => {
+    setToken(localStorage.getItem('token'));
+  };
+
+  window.addEventListener('storage', handleStorageChange);
+
+  return () => {
+    window.removeEventListener('storage', handleStorageChange);
+  };
+}, []);
 
   return (
     <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400">
@@ -56,6 +71,7 @@ const Navbar = () => {
                 <p
                   onClick={() => {
                     localStorage.removeItem('token');
+                    setToken(null);
                     navigate("/");
                   }}
                   className="hover:text-black cursor-pointer"

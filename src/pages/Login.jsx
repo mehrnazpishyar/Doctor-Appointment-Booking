@@ -1,5 +1,6 @@
-import React, { useEffect, useState }  from 'react'
+import React, { useContext, useEffect, useState }  from 'react'
 import { useNavigate } from 'react-router-dom';
+import { AppContext } from "../context/AppContext";
 
 const Login = () => {
   
@@ -9,6 +10,8 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+
+  const {setToken} = useContext(AppContext)
 
   const getUsers = () => {
     const users = localStorage.getItem('users');
@@ -35,7 +38,7 @@ const Login = () => {
       setMessage('Email already exists! Please log in.');
       setState('Login');
     } else {
-      const newUser = { name, email, password };
+      const newUser = { name, email, password,  phone: "", address: { line1: "", line2: "" }, gender: "", dob: "" };
       users.push(newUser);
       saveUsers(users);
       setMessage('Account created successfully! You can log in now.');
@@ -51,11 +54,13 @@ const Login = () => {
 
     if (user) {
       setMessage(`Welcome back, ${user.name}!`);
-      localStorage.setItem('token', JSON.stringify({ email })); 
+      localStorage.setItem("currentUser", JSON.stringify(user)); 
+      localStorage.setItem('token', 'unique-token-here'); 
     
       const redirectTo = localStorage.getItem("redirectTo") || "/my-profile";
       localStorage.removeItem("redirectTo");
       navigate(redirectTo);
+      setToken(localStorage.getItem('token'));
 
     } else {
       setMessage('Invalid email or password.');

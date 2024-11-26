@@ -16,6 +16,7 @@ import info_icon from './info_icon.svg'
 import verified_icon from './verified_icon.svg'
 import about from './about.jpg'
 import contact from './contact.jpg'
+import avatar from './avatar.png'
 import doc1 from './doc1.png'
 import doc2 from './doc2.png'
 import doc3 from './doc3.png'
@@ -52,7 +53,8 @@ export const assets = {
     info_icon,
     verified_icon,
     about,
-    contact
+    contact,
+    avatar
 }
 
 export const specialtyData = [

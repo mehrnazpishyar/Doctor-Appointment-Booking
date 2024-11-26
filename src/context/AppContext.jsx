@@ -7,6 +7,7 @@ const AppContextProvider = (props) => {
 
         const currencySymbol = '$';
         const [appointments, setAppointments] = useState([]);
+        const [token, setToken] = useState(localStorage.getItem('token'))
 
         const removeAppointment = (index) => {
             setAppointments((prev) => prev.filter((_, i) => i !== index));
@@ -17,7 +18,9 @@ const AppContextProvider = (props) => {
         currencySymbol,
         appointments,
         setAppointments,
-        removeAppointment
+        removeAppointment,
+        token,
+        setToken
     }
 
    
