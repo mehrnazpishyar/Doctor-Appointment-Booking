@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 const Appointment = () => {
   const { docId } = useParams();
   const navigate = useNavigate();
-  const { doctors, currencySymbol,setAppointments } = useContext(AppContext);
+  const { doctors, currencySymbol, setAppointments } = useContext(AppContext);
   const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
   const [docInfo, setDocInfo] = useState(null);
@@ -71,15 +71,14 @@ const Appointment = () => {
   };
 
   const bookAppointment = async () => {
-    const token = localStorage.getItem("token"); 
+    const token = localStorage.getItem("token");
     if (!token) {
       toast.warning("Please log in to book an appointment.");
-     
+
       localStorage.setItem("redirectTo", `/appointment/${docId}`);
       navigate("/login");
       return;
     }
-    
 
     if (!slotTime) {
       toast.error("Please select a time slot.");
@@ -99,12 +98,10 @@ const Appointment = () => {
       doctor: docInfo,
       date: slotDate,
       time: slotTime,
-  };
+    };
 
-
-  setAppointments((prev) => [...prev, newAppointment]);
-  toast.success("Your appointment has been successfully added!");
-
+    setAppointments((prev) => [...prev, newAppointment]);
+    toast.success("Your appointment has been successfully added!");
   };
 
   useEffect(() => {
@@ -192,7 +189,7 @@ const Appointment = () => {
             ))}
         </div>
         {/* Time*/}
-        <div className="flex items-center gap-3 w-full mt-4 flex-wrap">
+        <div className="flex items-center gap-3 w-full mt-4 flex-wrap sm:justify-start justify-center">
           {docSlots.length &&
             docSlots[slotIndex].map((item, index) => (
               <p
@@ -208,16 +205,17 @@ const Appointment = () => {
               </p>
             ))}
         </div>
-
-        <button
-          onClick={bookAppointment}
-          className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6"
-        >
-          Book an appointment
-        </button>
+        <div className="flex sm:justify-start justify-center">
+          <button
+            onClick={bookAppointment}
+            className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6"
+          >
+            Book an appointment
+          </button>
+        </div>
       </div>
-           {/* List of Related Doctors */}
-           <RelatedDoctors specialty={docInfo.specialty} docId={docId} />
+      {/* List of Related Doctors */}
+      <RelatedDoctors specialty={docInfo.specialty} docId={docId} />
     </div>
   ) : null;
 };
