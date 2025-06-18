@@ -14,13 +14,12 @@ const Contact = () => {
         <div className="flex flex-col justify-center items-start gap-6">
           <p className=" font-semibold text-lg text-gray-600">OUR HOSPITAL</p>
           <p className=" text-gray-500">
-            30627 Werner, Schroeder <br />
-            Louise, Hans, Deutschland
+            Deutschland
           </p>
           <p className=" text-gray-500">
-            Tel: +49-452-376-9820
+            Tel: +49-000-000-000
             <br />
-            Dr.Appointment@gmail.com
+            Dr.Appointment@*******
           </p>
         </div>
       </div>

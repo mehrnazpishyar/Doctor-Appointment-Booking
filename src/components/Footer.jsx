@@ -23,8 +23,8 @@ const Footer = () => {
         <div>
           <p className='text-xl font-medium mb-5'>GET IN TOUCH</p>
           <ul className='flex flex-col gap-2 text-gray-600'>
-            <li>+49-452-376-9820</li>
-            <li>Dr.Appointment@gmail.com</li>
+            <li>+49-000-000-0000</li>
+            <li>Dr.Appointment@*******</li>
           </ul>
         </div>
 
