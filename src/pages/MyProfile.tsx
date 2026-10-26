@@ -1,3 +1,5 @@
+import type { ChangeEvent } from "react";
+import type { Address, UserProfile } from "../types";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { assets } from "../assets/data";
@@ -6,7 +8,7 @@ import { assets } from "../assets/data";
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
 
-  const [userData, setUserData] = useState({
+  const [userData, setUserData] = useState<UserProfile>({
     name: "",
     email: "",
     phone: "",
@@ -33,26 +35,30 @@ const MyProfile = () => {
   };
 
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (field: Exclude<keyof UserProfile, "address">, value: string) => {
     setUserData((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
 
-  const handleAddressChange = (line, value) => {
+  const handleAddressChange = (line: keyof Address, value: string) => {
     setUserData((prev) => ({
       ...prev,
       address: { ...prev.address, [line]: value },
     }));
   };
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setUserData((prev) => ({ ...prev, profilePicture: reader.result }));
+        const profilePicture = reader.result;
+        if (typeof profilePicture === "string") {
+          setUserData((prev) => ({ ...prev, profilePicture }));
+        }
+
       };
       reader.readAsDataURL(file);
     }
@@ -60,7 +66,7 @@ const MyProfile = () => {
 
   return (
     <div className="max-w-lg flex flex-col gap-2 text-sm border border-gray-300 rounded-lg mx-auto py-4 mt-14 justify-center items-center">
-     <div className="relative">
+      <div className="relative">
         <img
           className="w-36 h-36 rounded-full object-cover"
           src={userData.profilePicture || assets.avatar}

@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AppContext } from "../context/AppContext";
+import { useAppContext } from "../context/useAppContext";
 
 const TopDoctors = () => {
   const navigate = useNavigate();
-  const {doctors} = useContext(AppContext)
+  const {doctors} = useAppContext()
   const [searchText, setSearchText] = useState(""); 
 
   const filteredDoctors = doctors.filter(

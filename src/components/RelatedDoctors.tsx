@@ -1,14 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react'
+import type { Doctor } from "../types";
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { AppContext } from '../context/AppContext'
+import { useAppContext } from "../context/useAppContext"
 
 
-const RelatedDoctors = ({ specialty, docId }) => {
+const RelatedDoctors = ({ specialty, docId }:{ specialty: string; docId?: string }) => {
 
     const navigate = useNavigate()
-    const { doctors } = useContext(AppContext)
+    const { doctors } = useAppContext()
 
-    const [relDoc, setRelDoc] = useState([])
+    const [relDoc, setRelDoc] = useState<Doctor[]>([])
 
     useEffect(() => {
         if (doctors.length > 0 && specialty) {

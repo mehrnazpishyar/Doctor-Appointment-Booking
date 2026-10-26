@@ -1,8 +1,7 @@
-import React, { useContext } from 'react'
-import { AppContext } from '../context/AppContext'
+import { useAppContext } from "../context/useAppContext";
 
 const MyAppointments = () => {
-  const { appointments,removeAppointment  } = useContext(AppContext)
+  const { appointments,removeAppointment  } = useAppContext()
   return (
     <div>
        <p className="pb-3 mt-12 font-medium text-blue-600">

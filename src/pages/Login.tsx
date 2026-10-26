@@ -1,6 +1,8 @@
-import React, { useContext, useEffect, useState }  from 'react'
+import type { FormEvent } from "react";
+import type { DemoUser } from "../types";
+import React, { useEffect, useState }  from 'react'
 import { useNavigate } from 'react-router-dom';
-import { AppContext } from "../context/AppContext";
+import { useAppContext } from "../context/useAppContext";
 
 const Login = () => {
   
@@ -11,14 +13,14 @@ const Login = () => {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
-  const {setToken} = useContext(AppContext)
+  const {setToken} = useAppContext()
 
-  const getUsers = () => {
+  const getUsers = (): DemoUser[]  => {
     const users = localStorage.getItem('users');
     return users ? JSON.parse(users) : [];
   };
 
-  const saveUsers = (users) => {
+  const saveUsers = (users: DemoUser[]) => {
     localStorage.setItem('users', JSON.stringify(users));
   };
 
@@ -68,7 +70,7 @@ const Login = () => {
   };
 
 
-  const onSubmitHandler = (event) => {
+  const onSubmitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (state === 'Sign Up') {
       handleSignUp();

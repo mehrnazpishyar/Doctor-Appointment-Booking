@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { assets } from "../assets/data";
 import { NavLink, useNavigate } from "react-router-dom";
-import { AppContext } from "../context/AppContext";
+import { useAppContext } from "../context/useAppContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
-  const {token,setToken} = useContext(AppContext)
+  const {token,setToken} = useAppContext()
   
 
 
@@ -20,7 +20,7 @@ useEffect(() => {
   return () => {
     window.removeEventListener('storage', handleStorageChange);
   };
-}, []);
+}, [setToken]);
 
   return (
     <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400">

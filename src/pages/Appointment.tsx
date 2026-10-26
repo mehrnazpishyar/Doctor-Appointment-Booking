@@ -1,6 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import type { Doctor, TimeSlot } from "../types";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AppContext } from "../context/AppContext";
+import { useAppContext } from "../context/useAppContext";
 import { assets } from "../assets/data";
 import RelatedDoctors from "../components/RelatedDoctors";
 import { toast } from "react-toastify";
@@ -8,19 +9,15 @@ import { toast } from "react-toastify";
 const Appointment = () => {
   const { docId } = useParams();
   const navigate = useNavigate();
-  const { doctors, currencySymbol, setAppointments } = useContext(AppContext);
+  const { doctors, currencySymbol, setAppointments } = useAppContext();
   const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
-  const [docInfo, setDocInfo] = useState(null);
-  const [docSlots, setDocSlots] = useState([]);
+  const [docInfo, setDocInfo] = useState<Doctor | null>(null);
+  const [docSlots, setDocSlots] = useState<TimeSlot[][]>([]);
   const [slotIndex, setSlotIndex] = useState(0);
   const [slotTime, setSlotTime] = useState("");
 
-  const fetchDocInfo = async () => {
-    const docInfo = doctors.find((doc) => doc._id === docId);
-    setDocInfo(docInfo);
-  };
-
+  
   const getAvailableSlots = async () => {
     setDocSlots([]);
 
@@ -51,7 +48,7 @@ const Appointment = () => {
       let timeSlots = [];
 
       while (currentDate < endTime) {
-        let formattedTime = currentDate.toLocaleTimeString([], {
+        const formattedTime = currentDate.toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
         });
@@ -85,6 +82,12 @@ const Appointment = () => {
       return;
     }
 
+    const selectedSlot = docSlots[slotIndex]?.find((slot) => slot.time === slotTime);
+    if (!docInfo || !selectedSlot) {
+      toast.error("Please select an available time slot.");
+      return;
+    }
+
     const date = docSlots[slotIndex][0].datetime;
 
     let day = date.getDate();
@@ -106,7 +109,7 @@ const Appointment = () => {
 
   useEffect(() => {
     if (doctors.length > 0) {
-      fetchDocInfo();
+       setDocInfo(doctors.find((doc) => doc._id === docId) ?? null);
     }
   }, [doctors, docId]);
 

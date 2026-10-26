@@ -1,6 +1,7 @@
 import React from "react";
 import emailjs from "@emailjs/browser";
 import { useState } from "react";
+import type { MouseEvent } from "react";
 
 const ContactForm = () => {
   const [username, setUsername] = useState("");
@@ -17,14 +18,14 @@ const ContactForm = () => {
       .match(/^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/);
   };
 
-  const handleSend = (e) => {
+  const handleSend = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     if (username === "") {
       setErrMsg("Username is required!");
     } else if (email === "") {
       setErrMsg("Please give your Email!");
-    } else if (!emailValidation(email)) {
+    } else if (!emailValidation()) {
       setErrMsg("Give a valid Email!");
     } else if (subject === "") {
       setErrMsg("Please give your Subject!");
@@ -140,8 +141,8 @@ const ContactForm = () => {
                       ? "border-[#ff5e57]"
                       : "border-transparent"
                   } bg-white text-gray-400`}
-                  cols="30"
-                  rows="8"
+                  cols={30}
+                  rows={8}
                 ></textarea>
               </div>
               <div className="w-full">
