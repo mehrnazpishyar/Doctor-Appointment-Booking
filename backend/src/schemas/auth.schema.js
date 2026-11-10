@@ -25,3 +25,8 @@ export const registerSchema = z
       ),
   })
   .strict();
+
+  export const loginSchema = registerSchema.pick({
+  email: true,
+  password: true,
+});
