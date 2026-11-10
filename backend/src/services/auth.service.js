@@ -75,3 +75,35 @@ export async function getUserById(userId) {
     },
   });
 }
+
+export async function updateUserProfile(userId, input) {
+  const data = { ...input };
+
+  if (Object.hasOwn(input, "dob")) {
+    data.dob =
+      input.dob === null
+        ? null
+        : new Date(`${input.dob}T00:00:00.000Z`);
+  }
+
+  return prisma.user.update({
+    where: {
+      id: userId,
+    },
+
+    data,
+
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      phone: true,
+      addressLine1: true,
+      addressLine2: true,
+      gender: true,
+      dob: true,
+      profilePicture: true,
+      createdAt: true,
+    },
+  });
+}
