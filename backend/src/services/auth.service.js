@@ -54,3 +54,24 @@ export async function loginUser({ email, password }) {
     },
   };
 }
+
+export async function getUserById(userId) {
+  return prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      phone: true,
+      addressLine1: true,
+      addressLine2: true,
+      gender: true,
+      dob: true,
+      profilePicture: true,
+      createdAt: true,
+    },
+  });
+}
