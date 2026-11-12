@@ -1,15 +1,21 @@
 import { Router } from "express";
 
 import {
-  requireAuth,
+    requireAuth,
 } from "../middleware/auth.middleware.js";
 
 import {
-  bookAppointment,
+    bookAppointment,
+    getMyAppointments,
+    cancelAppointment
 } from "../controllers/appointment.controller.js";
 
 const router = Router();
 
 router.post("/", requireAuth, bookAppointment);
+
+router.get("/", requireAuth, getMyAppointments);
+
+router.patch("/:id/cancel", requireAuth, cancelAppointment);
 
 export default router;

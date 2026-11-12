@@ -7,6 +7,24 @@ import {
   isBookableDate,
 } from "../utils/bookingSlots.js";
 
+const appointmentDetailsSelect = {
+  id: true,
+  doctorId: true,
+  startsAt: true,
+  status: true,
+  createdAt: true,
+  doctor: {
+    select: {
+      id: true,
+      name: true,
+      image: true,
+      specialty: true,
+      addressLine1: true,
+      addressLine2: true,
+    },
+  },
+};
+
 function appointmentError(status, message) {
   const error = new Error(message);
   error.status = status;
@@ -103,4 +121,95 @@ export async function createAppointment(
       },
     },
   });
+}
+
+export async function listUserAppointments(
+  userId,
+  { page, limit }
+) {
+  const where = { userId };
+
+  const [appointments, total] = await Promise.all([
+    prisma.appointment.findMany({
+      where,
+      select: appointmentDetailsSelect,
+      orderBy: [
+        { createdAt: "desc" },
+        { id: "desc" },
+      ],
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+
+    prisma.appointment.count({ where }),
+  ]);
+
+  return {
+    appointments,
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
+}
+
+export async function cancelUserAppointment(
+  userId,
+  appointmentId
+) {
+  const appointment = await prisma.appointment.findFirst({
+    where: {
+      id: appointmentId,
+      userId,
+    },
+    select: {
+      id: true,
+      status: true,
+      startsAt: true,
+    },
+  });
+
+  if (!appointment) {
+    throw appointmentError(404, "Appointment not found");
+  }
+
+  if (
+    appointment.status !== "BOOKED" ||
+    appointment.startsAt.getTime() <= Date.now()
+  ) {
+    throw appointmentError(
+      409,
+      "Only future booked appointments can be cancelled"
+    );
+  }
+
+  try {
+    return await prisma.appointment.update({
+      where: {
+        id: appointmentId,
+        userId,
+        status: "BOOKED",
+        startsAt: {
+          gt: new Date(),
+        },
+      },
+
+      data: {
+        status: "CANCELLED",
+      },
+
+      select: appointmentDetailsSelect,
+    });
+  } catch (error) {
+    if (error.code === "P2025") {
+      throw appointmentError(
+        409,
+        "Appointment is no longer available for cancellation"
+      );
+    }
+
+    throw error;
+  }
 }
