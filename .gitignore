@@ -36,3 +36,6 @@ backend/.env
 /backend/.claude/
 /backend/.windsurf/
 /backend/skills-lock.json
+
+
+.env.local
