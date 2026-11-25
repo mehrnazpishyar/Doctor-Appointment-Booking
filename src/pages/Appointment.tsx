@@ -1,127 +1,213 @@
-import type { Doctor, TimeSlot } from "../types";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppContext } from "../context/useAppContext";
 import { assets } from "../assets/data";
 import RelatedDoctors from "../components/RelatedDoctors";
 import { toast } from "react-toastify";
 import DoctorDataStatus from "../components/DoctorDataStatus";
+import { ApiError, apiRequest } from "../lib/api";
+
+interface AvailableSlot {
+  startsAt: string;
+  time: string;
+}
+
+interface SlotsResponse {
+  doctorId: string;
+  date: string;
+  timeZone: string;
+  doctorAvailable: boolean;
+  slotDurationMinutes: number;
+  slots: AvailableSlot[];
+}
+
+function getBookingDays() {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Europe/Berlin",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+
+  const getPart = (type: string) =>
+    parts.find((part) => part.type === type)?.value ?? "";
+
+  const today = `${getPart("year")}-${getPart("month")}-${getPart("day")}`;
+
+  return Array.from({ length: 7 }, (_, index) => {
+    const date = new Date(`${today}T12:00:00Z`);
+    date.setUTCDate(date.getUTCDate() + index);
+
+    return {
+      date: date.toISOString().slice(0, 10),
+      day: new Intl.DateTimeFormat("en-US", {
+        weekday: "short",
+        timeZone: "Europe/Berlin",
+      }).format(date).toUpperCase(),
+      dayNumber: date.getUTCDate(),
+    };
+  });
+}
 
 const Appointment = () => {
   const { docId } = useParams();
   const navigate = useNavigate();
-  const { doctors, doctorsLoading, doctorsError, currencySymbol, setAppointments } = useAppContext();
-  const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
-  const [docInfo, setDocInfo] = useState<Doctor | null>(null);
-  const [docSlots, setDocSlots] = useState<TimeSlot[][]>([]);
-  const [slotIndex, setSlotIndex] = useState(0);
-  const [slotTime, setSlotTime] = useState("");
+  const {
+    doctors,
+    doctorsLoading,
+    doctorsError,
+    currencySymbol,
+    token,
+    setToken,
+  } = useAppContext();
 
+  const docInfo = doctors.find((doctor) => doctor._id === docId);
 
-  const getAvailableSlots = async () => {
-    setDocSlots([]);
+  const [bookingDays] = useState(getBookingDays);
+  const [selectedDate, setSelectedDate] = useState(
+    bookingDays[0].date
+  );
 
-    // getting current date
-    let today = new Date();
+  const [availability, setAvailability] =
+    useState<SlotsResponse | null>(null);
 
-    for (let i = 0; i < 7; i++) {
-      // getting date with index
-      let currentDate = new Date(today);
-      currentDate.setDate(today.getDate() + i);
+  const [selectedStartsAt, setSelectedStartsAt] = useState("");
+  const [slotsLoading, setSlotsLoading] = useState(true);
+  const [slotsError, setSlotsError] = useState("");
+  const [reloadVersion, setReloadVersion] = useState(0);
+  const [isBooking, setIsBooking] = useState(false);
 
-      // setting end time of the date with index
-      let endTime = new Date();
-      endTime.setDate(today.getDate() + i);
-      endTime.setHours(21, 0, 0, 0);
+  // Only use results belonging to the current doctor and date.
+  const currentAvailability =
+      availability &&
+      availability?.doctorId === docId &&
+      availability.date === selectedDate
+      ? availability
+      : null;
 
-      // setting hours
-      if (today.getDate() === currentDate.getDate()) {
-        currentDate.setHours(
-          currentDate.getHours() > 10 ? currentDate.getHours() + 1 : 10
+  const slots = currentAvailability?.slots ?? [];
+
+  const selectedSlot = slots.find(
+    (slot) => slot.startsAt === selectedStartsAt
+  );
+
+  useEffect(() => {
+    if (!docId) return;
+
+    const controller = new AbortController();
+    let active = true;
+
+    setSlotsLoading(true);
+    setSlotsError("");
+    setAvailability(null);
+    setSelectedStartsAt("");
+
+    apiRequest<SlotsResponse>(
+      `/doctors/${encodeURIComponent(docId)}/slots?date=${selectedDate}`,
+      { signal: controller.signal }
+    )
+      .then((data) => {
+        if (active) {
+          setAvailability(data);
+        }
+      })
+      .catch((error: unknown) => {
+        if (!active) return;
+
+        setSlotsError(
+          error instanceof ApiError
+            ? error.message
+            : "Could not load available times. Please try again."
         );
-        currentDate.setMinutes(currentDate.getMinutes() > 30 ? 30 : 0);
-      } else {
-        currentDate.setHours(10);
-        currentDate.setMinutes(0);
-      }
+      })
+      .finally(() => {
+        if (active) {
+          setSlotsLoading(false);
+        }
+      });
 
-      let timeSlots = [];
-
-      while (currentDate < endTime) {
-        const formattedTime = currentDate.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        });
-
-        // Add slot to array
-        timeSlots.push({
-          datetime: new Date(currentDate),
-          time: formattedTime,
-        });
-
-        // Increment current time by 30 minutes
-        currentDate.setMinutes(currentDate.getMinutes() + 30);
-      }
-
-      setDocSlots((prev) => [...prev, timeSlots]);
-    }
-  };
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, [docId, selectedDate, reloadVersion]);
 
   const bookAppointment = async () => {
-    const token = localStorage.getItem("token");
+    if (isBooking) return;
+
     if (!token) {
       toast.warning("Please log in to book an appointment.");
-
       localStorage.setItem("redirectTo", `/appointment/${docId}`);
       navigate("/login");
       return;
     }
 
-    if (!slotTime) {
-      toast.error("Please select a time slot.");
-      return;
-    }
-
-    const selectedSlot = docSlots[slotIndex]?.find((slot) => slot.time === slotTime);
-    if (!docInfo || !selectedSlot) {
+    if (
+      !docId ||
+      slotsLoading ||
+      slotsError ||
+      !selectedSlot
+    ) {
       toast.error("Please select an available time slot.");
       return;
     }
 
-    const date = docSlots[slotIndex][0].datetime;
+    setIsBooking(true);
 
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
+    try {
+      await apiRequest<{ message: string }>("/appointments", {
+        method: "POST",
+        token,
+        body: JSON.stringify({
+          doctorId: docId,
+          startsAt: selectedSlot.startsAt,
+        }),
+      });
 
-    const slotDate = `${day}_${month}_${year}`;
-    console.log(slotDate, slotTime);
+      toast.success("Your appointment has been booked!");
 
-    const newAppointment = {
-      doctor: docInfo,
-      date: slotDate,
-      time: slotTime,
-    };
+      setSelectedStartsAt("");
+      setAvailability(null);
+      setSlotsLoading(true);
+      setReloadVersion((version) => version + 1);
+    } catch (error: unknown) {
+      if (error instanceof ApiError && error.status === 401) {
+        localStorage.removeItem("token");
+        setToken(null);
+        localStorage.setItem("redirectTo", `/appointment/${docId}`);
+        toast.error("Please log in again.");
+        navigate("/login");
+        return;
+      }
 
-    setAppointments((prev) => [...prev, newAppointment]);
-    toast.success("Your appointment has been successfully added!");
+      if (error instanceof ApiError && error.status === 409) {
+        setSelectedStartsAt("");
+        setAvailability(null);
+        setSlotsLoading(true);
+        setReloadVersion((version) => version + 1);
+      }
+
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Could not book your appointment."
+      );
+    } finally {
+      setIsBooking(false);
+    }
   };
-
-  useEffect(() => {
-    if (doctors.length > 0) {
-      setDocInfo(doctors.find((doc) => doc._id === docId) ?? null);
-    }
-  }, [doctors, docId]);
-
-  useEffect(() => {
-    if (docInfo) {
-      getAvailableSlots();
-    }
-  }, [docInfo]);
 
   if (doctorsLoading || doctorsError) {
     return <DoctorDataStatus />;
+  }
+
+  if (!docInfo) {
+    return (
+      <p className="py-16 text-center">
+        Doctor not found.
+      </p>
+    );
   }
 
   return docInfo ? (
@@ -172,65 +258,115 @@ const Appointment = () => {
       </div>
 
       {/* Booking slots */}
+      {/* Booking slots */}
       <div className="sm:ml-72 sm:pl-4 mt-16 font-medium text-gray-700">
-        <p className="text-lg text-blue-700 font-bold">Booking slots</p>
-        {/* Day */}
-        {/* Day */}
+        <p className="text-lg text-blue-700 font-bold">
+          Booking slots
+        </p>
+
+        <p className="text-sm text-gray-500 mt-1">
+          All times are shown in Europe/Berlin.
+        </p>
+
+        {/* Days */}
         <div className="flex gap-4 items-center w-full overflow-x-auto mt-4">
-          {docSlots.map((slots, index) => {
-            const date = new Date();
-            date.setDate(date.getDate() + index);
+          {bookingDays.map((day) => (
+            <button
+              type="button"
+              key={day.date}
+              disabled={isBooking}
+              aria-pressed={selectedDate === day.date}
+              onClick={() => {
+                if (day.date === selectedDate) return;
 
-            const hasSlots = slots.length > 0;
+                setSelectedDate(day.date);
+                setSelectedStartsAt("");
+                setAvailability(null);
+                setSlotsError("");
+                setSlotsLoading(true);
+              }}
+              className={`flex flex-col items-center justify-center
+          h-24 min-w-16 shrink-0 rounded-md border
+          disabled:cursor-not-allowed ${selectedDate === day.date
+                  ? "bg-primary text-white border-primary"
+                  : "border-gray-200 text-gray-700"
+                }`}
+            >
+              <span className="font-bold">{day.day}</span>
+              <span className="text-sm">{day.dayNumber}</span>
+            </button>
+          ))}
+        </div>
 
-            return (
+        {/* Times */}
+        <div className="mt-4">
+          {slotsLoading ? (
+            <p role="status" className="text-sm text-gray-500">
+              Loading available times...
+            </p>
+          ) : slotsError ? (
+            <div>
+              <p role="alert" className="text-sm text-red-600">
+                {slotsError}
+              </p>
+
               <button
                 type="button"
-                key={index}
-                disabled={!hasSlots}
                 onClick={() => {
-                  setSlotIndex(index);
-                  setSlotTime("");
+                  setSlotsLoading(true);
+                  setSlotsError("");
+                  setReloadVersion((version) => version + 1);
                 }}
-                className={`flex flex-col items-center justify-center
-          h-24 min-w-16 shrink-0 rounded-md border
-          disabled:opacity-40 disabled:cursor-not-allowed ${slotIndex === index && hasSlots
-                    ? "bg-primary text-white border-primary"
-                    : "border-gray-200 text-gray-700"
-                  }`}
+                className="mt-2 text-primary underline"
               >
-                <span className="font-bold">
-                  {daysOfWeek[date.getDay()]}
-                </span>
-                <span className="text-sm">
-                  {date.getDate()}
-                </span>
+                Try again
               </button>
-            );
-          })}
+            </div>
+          ) : !currentAvailability?.doctorAvailable ? (
+            <p className="text-sm text-gray-500">
+              This doctor is currently unavailable.
+            </p>
+          ) : slots.length === 0 ? (
+            <p className="text-sm text-gray-500">
+              No available times for this day. Please choose another day.
+            </p>
+          ) : (
+            <div className="flex items-center gap-3 flex-wrap sm:justify-start justify-center">
+              {slots.map((slot) => (
+                <button
+                  type="button"
+                  key={slot.startsAt}
+                  disabled={isBooking}
+                  aria-pressed={selectedStartsAt === slot.startsAt}
+                  onClick={() => setSelectedStartsAt(slot.startsAt)}
+                  className={`text-sm font-light shrink-0 px-5 py-2
+              rounded-full border disabled:cursor-not-allowed ${selectedStartsAt === slot.startsAt
+                      ? "bg-primary text-white border-primary"
+                      : "text-gray-500 border-gray-300"
+                    }`}
+                >
+                  {slot.time}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
-        {/* Time*/}
-        <div className="flex items-center gap-3 w-full mt-4 flex-wrap sm:justify-start justify-center">
-          {docSlots.length &&
-            docSlots[slotIndex].map((item, index) => (
-              <p
-                onClick={() => setSlotTime(item.time)}
-                key={index}
-                className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${item.time === slotTime
-                  ? "bg-primary text-white"
-                  : "text-gray-400 border border-gray-300"
-                  }`}
-              >
-                {item.time.toLowerCase()}
-              </p>
-            ))}
-        </div>
+
         <div className="flex sm:justify-start justify-center">
           <button
+            type="button"
             onClick={bookAppointment}
-            className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6"
+            disabled={
+              isBooking ||
+              slotsLoading ||
+              Boolean(slotsError) ||
+              !selectedSlot
+            }
+            className="bg-primary text-white text-sm font-light
+        px-14 py-3 rounded-full my-6
+        disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            Book an appointment
+            {isBooking ? "Booking..." : "Book an appointment"}
           </button>
         </div>
       </div>
