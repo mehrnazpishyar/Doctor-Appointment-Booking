@@ -13,6 +13,7 @@ export interface Doctor {
   about: string;
   fees: number;
   address: Address;
+  available: boolean;
 }
 
 export interface Appointment {

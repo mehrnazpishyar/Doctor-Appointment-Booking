@@ -1,18 +1,23 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/useAppContext";
+import DoctorDataStatus from "./DoctorDataStatus";
 
 const TopDoctors = () => {
   const navigate = useNavigate();
-  const {doctors} = useAppContext()
-  const [searchText, setSearchText] = useState(""); 
+  const { doctors, doctorsLoading, doctorsError } = useAppContext()
+  const [searchText, setSearchText] = useState("");
 
   const filteredDoctors = doctors.filter(
     (doc) =>
       doc.name.toLowerCase().includes(searchText.toLowerCase()) ||
       doc.specialty.toLowerCase().includes(searchText.toLowerCase())
   );
-  
+
+  if (doctorsLoading || doctorsError) {
+    return <DoctorDataStatus />;
+  }
+
   return (
     <div className="flex flex-col items-center gap-4 my-16 text-gray-900 md:mx-10">
       <h1 className="text-3xl font-medium">Top Doctors to Book</h1>
@@ -38,9 +43,11 @@ const TopDoctors = () => {
           >
             <img className="bg-gray-100" src={item.image} alt="" />
             <div className="p-4">
-              <div className="flex items-center gap-2 text-sm text-center text-green-500">
-                <p className="w-2 h-2 bg-green-500 rounded-full"></p>
-                <p>Available</p>
+              <div className={`flex items-center gap-2 text-sm ${item.available ? "text-green-500" : "text-gray-500"
+                } `}>
+                <span className={`w-2 h-2 rounded-full${item.available ? "bg-green-500" : "bg-gray-400"
+                  }`} />
+                <p>{item.available ? "Available" : "Unavailable"}</p>
               </div>
               <p className="text-gray-900 text-lg font-medium">{item.name}</p>
               <p className="text-blue-500 text-sm">{item.specialty}</p>
